@@ -8,7 +8,7 @@ package defense.system;
  *
  * @author HP
  */
-public class SuperDefence implements Observable {
+public abstract class SuperDefence implements Observable {
 
     // Common attributes
     private String unitName;
