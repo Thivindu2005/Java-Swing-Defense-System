@@ -4,18 +4,67 @@
  */
 package defense.system;
 
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 /**
  *
  * @author HP
  */
+
 public class HelicopterGUI extends javax.swing.JFrame {
+    
+    private Helicopter helicopter;
+
+    private int controllerPosition = 0;
 
     /**
      * Creates new form HelicopterGUI
      */
     public HelicopterGUI() {
-        initComponents();
+         this(new Helicopter());
     }
+
+public HelicopterGUI(Helicopter helicopter) {
+
+    initComponents();
+
+    this.helicopter = helicopter;
+
+    setLocationRelativeTo(null);
+
+    // Disable operation buttons initially
+    btnShoot.setEnabled(false);
+    btnMissile.setEnabled(false);
+    btnLaser.setEnabled(false);
+
+    // Disable position slider initially
+    sldPosition.setEnabled(false);
+    }
+
+//Create the permission method
+public void updateOperationButtons(int position) {
+
+    controllerPosition = position;
+
+    if (chkPosition.isSelected()) {
+
+        btnShoot.setEnabled(position >= 20);
+
+        btnMissile.setEnabled(position >= 60);
+
+        btnLaser.setEnabled(position > 80);
+
+    } else {
+
+        btnShoot.setEnabled(false);
+
+        btnMissile.setEnabled(false);
+
+        btnLaser.setEnabled(false);
+    }
+}
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -57,9 +106,19 @@ public class HelicopterGUI extends javax.swing.JFrame {
 
         btnMissile.setFont(new java.awt.Font("Segoe UI Semibold", 1, 12)); // NOI18N
         btnMissile.setText("Missile Operation");
+        btnMissile.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnMissileActionPerformed(evt);
+            }
+        });
 
         btnLaser.setFont(new java.awt.Font("Segoe UI Semibold", 1, 12)); // NOI18N
         btnLaser.setText("Laser Operation");
+        btnLaser.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLaserActionPerformed(evt);
+            }
+        });
 
         lblSoldierCount.setFont(new java.awt.Font("Segoe UI Semibold", 1, 12)); // NOI18N
         lblSoldierCount.setText("Soldier Count");
@@ -67,7 +126,24 @@ public class HelicopterGUI extends javax.swing.JFrame {
         lblAmmoCount.setFont(new java.awt.Font("Segoe UI Semibold", 1, 12)); // NOI18N
         lblAmmoCount.setText("Ammo Count");
 
+        spnSoldierCount.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                spnSoldierCountStateChanged(evt);
+            }
+        });
+
+        spnAmmoCount.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                spnAmmoCountStateChanged(evt);
+            }
+        });
+
         chkPosition.setText("Position");
+        chkPosition.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chkPositionActionPerformed(evt);
+            }
+        });
 
         sldPosition.setMajorTickSpacing(20);
         sldPosition.setMinorTickSpacing(10);
@@ -76,6 +152,11 @@ public class HelicopterGUI extends javax.swing.JFrame {
         sldPosition.setPaintTicks(true);
         sldPosition.setToolTipText("");
         sldPosition.setCursor(new java.awt.Cursor(java.awt.Cursor.MOVE_CURSOR));
+        sldPosition.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                sldPositionStateChanged(evt);
+            }
+        });
 
         txtMessages.setColumns(20);
         txtMessages.setRows(5);
@@ -83,6 +164,11 @@ public class HelicopterGUI extends javax.swing.JFrame {
 
         btnSend.setFont(new java.awt.Font("Segoe UI Semibold", 1, 12)); // NOI18N
         btnSend.setText("Send");
+        btnSend.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSendActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -169,8 +255,122 @@ public class HelicopterGUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnShootActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnShootActionPerformed
-        // TODO add your handling code here:
+        if (helicopter.shoot()) {
+
+            txtMessages.append(
+             "Helicopter: Shoot operation completed.\n"
+            );
+
+            spnAmmoCount.setValue(
+             helicopter.getAmmoCount()
+            );
+
+        } else {
+
+            JOptionPane.showMessageDialog(
+                 this,
+                 "Not enough ammunition!"
+             );
+        }        // TODO add your handling code here:
     }//GEN-LAST:event_btnShootActionPerformed
+
+    private void btnMissileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMissileActionPerformed
+        
+            if (helicopter.missileOperation()) {
+
+                txtMessages.append(
+                 "Helicopter: Missile operation completed.\n"
+                 );
+
+                spnAmmoCount.setValue(
+                helicopter.getAmmoCount()
+            );
+
+            } else {
+
+                JOptionPane.showMessageDialog(
+                    this,
+                    "Not enough ammunition!"
+                );
+            }        // TODO add your handling code here:
+    }//GEN-LAST:event_btnMissileActionPerformed
+
+    private void btnLaserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLaserActionPerformed
+
+        if (helicopter.laserOperation()) {
+
+            txtMessages.append(
+            "Helicopter: Laser operation completed.\n"
+             );
+
+            spnAmmoCount.setValue(
+            helicopter.getAmmoCount()
+        );
+
+        } else {
+
+            JOptionPane.showMessageDialog(
+                 this,
+                "Not enough ammunition!"
+            );
+        }        // TODO add your handling code here:
+    }//GEN-LAST:event_btnLaserActionPerformed
+
+    private void spnSoldierCountStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_spnSoldierCountStateChanged
+        int count = (Integer) spnSoldierCount.getValue();
+
+        helicopter.updateSoldierCount(count);        // TODO add your handling code here:
+    }//GEN-LAST:event_spnSoldierCountStateChanged
+
+    private void spnAmmoCountStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_spnAmmoCountStateChanged
+        int count = (Integer) spnAmmoCount.getValue();
+
+        helicopter.updateAmmoCount(count);        // TODO add your handling code here:
+    }//GEN-LAST:event_spnAmmoCountStateChanged
+
+    private void chkPositionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkPositionActionPerformed
+        if (chkPosition.isSelected()) {
+
+            sldPosition.setEnabled(true);
+
+        } else {
+
+            sldPosition.setEnabled(false);
+        }
+
+        updateOperationButtons(controllerPosition);        // TODO add your handling code here:
+    }//GEN-LAST:event_chkPositionActionPerformed
+
+    private void sldPositionStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_sldPositionStateChanged
+        if (chkPosition.isSelected()) {
+
+            helicopter.updatePosition(
+            sldPosition.getValue()
+        );
+}        // TODO add your handling code here:
+    }//GEN-LAST:event_sldPositionStateChanged
+
+    private void btnSendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSendActionPerformed
+        String message = txtMessage.getText();
+
+        if (message.trim().equals("")) {
+
+        JOptionPane.showMessageDialog(
+             this,
+             "Please enter a message!"
+        );
+
+        } else {
+
+            helicopter.sendMessage(message);
+
+            txtMessages.append(
+                 "Helicopter: " + message + "\n"
+            );
+
+            txtMessage.setText("");
+        }        // TODO add your handling code here:
+    }//GEN-LAST:event_btnSendActionPerformed
 
     /**
      * @param args the command line arguments

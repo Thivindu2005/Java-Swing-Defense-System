@@ -156,6 +156,9 @@
         </Property>
         <Property name="text" type="java.lang.String" value="Missile Operation"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnMissileActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="btnLaser">
       <Properties>
@@ -164,6 +167,9 @@
         </Property>
         <Property name="text" type="java.lang.String" value="Laser Operation"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnLaserActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="lblSoldierCount">
       <Properties>
@@ -182,13 +188,22 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JSpinner" name="spnSoldierCount">
+      <Events>
+        <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="spnSoldierCountStateChanged"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JSpinner" name="spnAmmoCount">
+      <Events>
+        <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="spnAmmoCountStateChanged"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JCheckBox" name="chkPosition">
       <Properties>
         <Property name="text" type="java.lang.String" value="Position"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="chkPositionActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JSlider" name="sldPosition">
       <Properties>
@@ -202,6 +217,9 @@
           <Color id="Move Cursor"/>
         </Property>
       </Properties>
+      <Events>
+        <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="sldPositionStateChanged"/>
+      </Events>
     </Component>
     <Container class="javax.swing.JScrollPane" name="jScrollPane1">
       <AuxValues>
@@ -227,6 +245,9 @@
         </Property>
         <Property name="text" type="java.lang.String" value="Send"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnSendActionPerformed"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>
