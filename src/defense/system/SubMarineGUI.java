@@ -4,19 +4,79 @@
  */
 package defense.system;
 
+    import javax.swing.*;
 /**
  *
  * @author HP
  */
 public class SubMarineGUI extends javax.swing.JFrame {
+    
+    private SubMarine submarine;
+    private int controllerPosition = 0;
 
     /**
      * Creates new form SubMarineGUI
      */
-    public SubMarineGUI() {
-        initComponents();
-    }
+public SubMarineGUI() {
+    this(new SubMarine());
+}
 
+public SubMarineGUI(SubMarine submarine) {
+
+    initComponents();
+
+    this.submarine = submarine;
+
+    setTitle("SubMarine");
+    setLocationRelativeTo(null);
+
+    // Disable operation buttons initially
+    btnShoot.setEnabled(false);
+    btnSonar.setEnabled(false);
+    btnTomahawk.setEnabled(false);
+    btnTrident.setEnabled(false);
+
+    // Display initial Energy and Oxygen
+    sldEnergy.setValue(submarine.getEnergy());
+    sldOxygen.setValue(submarine.getOxygen());
+
+    // Sliders are display indicators
+    sldEnergy.setEnabled(false);
+    sldOxygen.setEnabled(false);
+
+    // Message area cannot be edited
+    txtMessages.setEditable(false);
+}
+
+private void updateResources() {
+
+    sldEnergy.setValue(submarine.getEnergy());
+    sldOxygen.setValue(submarine.getOxygen());
+
+    spnAmmoCount.setValue(submarine.getAmmoCount());
+}
+
+//Add the position permission method
+public void updateOperationButtons(int position) {
+
+    controllerPosition = position;
+
+    boolean positionSelected = chkPosition.isSelected();
+
+    btnShoot.setEnabled(positionSelected && position >= 20);
+
+    btnSonar.setEnabled(positionSelected && position >= 40);
+
+    btnTomahawk.setEnabled(positionSelected && position >= 60);
+
+    btnTrident.setEnabled(positionSelected && position >= 80);
+
+    if (position >= 20) {
+        lblAreaStatus.setText("Area Cleared");
+    } else {
+        lblAreaStatus.setText("Area Not Cleared");
+    }
+}
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -41,7 +101,7 @@ public class SubMarineGUI extends javax.swing.JFrame {
         txtMessages = new javax.swing.JTextArea();
         txtMessage = new javax.swing.JTextField();
         btnSend = new javax.swing.JButton();
-        sldPosition = new javax.swing.JSlider();
+        sldEnergy = new javax.swing.JSlider();
         lblEnergy = new javax.swing.JLabel();
         lblOxygen = new javax.swing.JLabel();
 
@@ -133,16 +193,16 @@ public class SubMarineGUI extends javax.swing.JFrame {
             }
         });
 
-        sldPosition.setMajorTickSpacing(20);
-        sldPosition.setMinorTickSpacing(10);
-        sldPosition.setOrientation(javax.swing.JSlider.VERTICAL);
-        sldPosition.setPaintLabels(true);
-        sldPosition.setPaintTicks(true);
-        sldPosition.setToolTipText("");
-        sldPosition.setCursor(new java.awt.Cursor(java.awt.Cursor.MOVE_CURSOR));
-        sldPosition.addChangeListener(new javax.swing.event.ChangeListener() {
+        sldEnergy.setMajorTickSpacing(20);
+        sldEnergy.setMinorTickSpacing(10);
+        sldEnergy.setOrientation(javax.swing.JSlider.VERTICAL);
+        sldEnergy.setPaintLabels(true);
+        sldEnergy.setPaintTicks(true);
+        sldEnergy.setToolTipText("");
+        sldEnergy.setCursor(new java.awt.Cursor(java.awt.Cursor.MOVE_CURSOR));
+        sldEnergy.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                sldPositionStateChanged(evt);
+                sldEnergyStateChanged(evt);
             }
         });
 
@@ -197,7 +257,7 @@ public class SubMarineGUI extends javax.swing.JFrame {
                                             .addGap(147, 147, 147)
                                             .addComponent(lblSoldierCount, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE))))))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
-                        .addComponent(sldPosition, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(sldEnergy, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(27, 27, 27)
@@ -248,7 +308,7 @@ public class SubMarineGUI extends javax.swing.JFrame {
                             .addComponent(lblOxygen))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(sldPosition, javax.swing.GroupLayout.PREFERRED_SIZE, 261, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(sldEnergy, javax.swing.GroupLayout.PREFERRED_SIZE, 261, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(sldOxygen, javax.swing.GroupLayout.PREFERRED_SIZE, 261, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(21, Short.MAX_VALUE))
         );
@@ -257,23 +317,71 @@ public class SubMarineGUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnShootActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnShootActionPerformed
+           if (submarine.shoot()) {
 
+            txtMessages.append("SubMarine: Shoot operation completed.\n");
+
+           updateResources();
+
+            } else {
+
+                JOptionPane.showMessageDialog(
+                    this,
+                    "Not enough ammunition, energy or oxygen!"
+                );
+            }
     }//GEN-LAST:event_btnShootActionPerformed
 
     private void btnTomahawkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTomahawkActionPerformed
-     // TODO add your handling code here:
+        if (submarine.tomahawkMissile()) {
+
+            txtMessages.append("SubMarine: Tomahawk missile launched.\n");
+
+        updateResources();
+
+        } else {
+
+            JOptionPane.showMessageDialog(
+             this,
+                  "Not enough ammunition, energy or oxygen!"
+            );
+        } // TODO add your handling code here:
     }//GEN-LAST:event_btnTomahawkActionPerformed
 
     private void btnTridentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTridentActionPerformed
-       // TODO add your handling code here:
+            if (submarine.tridentMissile()) {
+
+                txtMessages.append("SubMarine: Trident-2 missile launched.\n");
+
+                updateResources();
+
+            } else {
+
+                JOptionPane.showMessageDialog(
+                  this,
+                        "Not enough ammunition, energy or oxygen!"
+                );
+            }   // TODO add your handling code here:
     }//GEN-LAST:event_btnTridentActionPerformed
 
     private void btnSonarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSonarActionPerformed
-       // TODO add your handling code here:
+        if (submarine.sonarOperation()) {
+
+             txtMessages.append("SubMarine: Sonar operation completed.\n");
+
+        updateResources();
+
+        } else {
+
+            JOptionPane.showMessageDialog(
+            this,
+                  "Not enough energy or oxygen!"
+            );
+        }       // TODO add your handling code here:
     }//GEN-LAST:event_btnSonarActionPerformed
 
     private void chkPositionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkPositionActionPerformed
-     // TODO add your handling code here:
+        updateOperationButtons(controllerPosition);     // TODO add your handling code here:
     }//GEN-LAST:event_chkPositionActionPerformed
 
     private void spnAmmoCountStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_spnAmmoCountStateChanged
@@ -289,12 +397,26 @@ public class SubMarineGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_sldOxygenStateChanged
 
     private void btnSendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSendActionPerformed
-   // TODO add your handling code here:
+        String message = txtMessage.getText();
+
+if (message.trim().equals("")) {
+
+    JOptionPane.showMessageDialog(
+        this,
+        "Please enter a message!"
+    );
+
+} else {
+
+    txtMessages.append("SubMarine: " + message + "\n");
+
+    txtMessage.setText("");
+}// TODO add your handling code here:
     }//GEN-LAST:event_btnSendActionPerformed
 
-    private void sldPositionStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_sldPositionStateChanged
+    private void sldEnergyStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_sldEnergyStateChanged
         // TODO add your handling code here:
-    }//GEN-LAST:event_sldPositionStateChanged
+    }//GEN-LAST:event_sldEnergyStateChanged
 
     /**
      * @param args the command line arguments
@@ -344,8 +466,8 @@ public class SubMarineGUI extends javax.swing.JFrame {
     private javax.swing.JLabel lblEnergy;
     private javax.swing.JLabel lblOxygen;
     private javax.swing.JLabel lblSoldierCount;
+    private javax.swing.JSlider sldEnergy;
     private javax.swing.JSlider sldOxygen;
-    private javax.swing.JSlider sldPosition;
     private javax.swing.JSpinner spnAmmoCount;
     private javax.swing.JSpinner spnSoldierCount;
     private javax.swing.JTextField txtMessage;

@@ -78,7 +78,7 @@
                           </Group>
                       </Group>
                       <EmptySpace pref="26" max="32767" attributes="0"/>
-                      <Component id="sldPosition" min="-2" pref="58" max="-2" attributes="0"/>
+                      <Component id="sldEnergy" min="-2" pref="58" max="-2" attributes="0"/>
                   </Group>
               </Group>
               <Group type="103" groupAlignment="0" attributes="0">
@@ -148,7 +148,7 @@
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="sldPosition" min="-2" pref="261" max="-2" attributes="0"/>
+                          <Component id="sldEnergy" min="-2" pref="261" max="-2" attributes="0"/>
                           <Component id="sldOxygen" min="-2" pref="261" max="-2" attributes="0"/>
                       </Group>
                   </Group>
@@ -289,7 +289,7 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnSendActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JSlider" name="sldPosition">
+    <Component class="javax.swing.JSlider" name="sldEnergy">
       <Properties>
         <Property name="majorTickSpacing" type="int" value="20"/>
         <Property name="minorTickSpacing" type="int" value="10"/>
@@ -302,7 +302,7 @@
         </Property>
       </Properties>
       <Events>
-        <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="sldPositionStateChanged"/>
+        <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="sldEnergyStateChanged"/>
       </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="lblEnergy">
