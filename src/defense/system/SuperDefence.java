@@ -134,6 +134,12 @@ public abstract class SuperDefence implements Observable {
         this.message = message;
         notifyObservers();
     }
+    
+    // Receive message from MainController
+    public void receiveMessage(String message) {
+
+    this.message = message;
+}
 
     // Add observer
     @Override

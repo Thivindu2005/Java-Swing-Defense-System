@@ -5,8 +5,7 @@
 package defense.system;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+
 
 /**
  *
@@ -64,6 +63,13 @@ public void updateOperationButtons(int position) {
 
         btnLaser.setEnabled(false);
     }
+}
+
+public void receiveMessage(String message) {
+
+    txtMessages.append(
+        "MainController: " + message + "\n"
+    );
 }
 
     /**

@@ -75,10 +75,15 @@ public class MainController implements Observer {
             }
         }
     }
+    
+    
 
-    // Receive information from defence units
-    @Override
-    public void update(SuperDefence defence) {
+@Override
+public void update(SuperDefence defence) {
+
+    if (broadcasting) {
+        return;
+    }
 
         String information =
 
@@ -117,5 +122,25 @@ public class MainController implements Observer {
 
         return informationLog;
     }
+    
+    // Prevent controller messages from being recorded as unit messages
+private boolean broadcasting = false;
+
+// Send a message to all registered defence units
+public void broadcastMessage(String message) {
+
+    if (message == null || message.trim().isEmpty()) {
+        return;
+    }
+
+    broadcasting = true;
+
+    for (int i = 0; i < defenceCount; i++) {
+
+        defences[i].setMessage(message);
+    }
+
+    broadcasting = false;
+}
     
 }

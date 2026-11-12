@@ -77,6 +77,13 @@ public void updateOperationButtons(int position) {
         lblAreaStatus.setText("Area Not Cleared");
     }
 }
+
+public void receiveMessage(String message) {
+
+    txtMessages.append(
+        "MainController: " + message + "\n"
+    );
+}
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -400,21 +407,23 @@ public void updateOperationButtons(int position) {
     }//GEN-LAST:event_sldOxygenStateChanged
 
     private void btnSendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSendActionPerformed
-        String message = txtMessage.getText();
+            String message = txtMessage.getText().trim();
 
-if (message.trim().equals("")) {
+    if (message.equals("")) {
 
-    JOptionPane.showMessageDialog(
-        this,
-        "Please enter a message!"
-    );
+        JOptionPane.showMessageDialog(
+            this,
+            "Please enter a message!"
+        );
 
-} else {
+        return;
+    }
 
-    txtMessages.append("SubMarine: " + message + "\n");
+    // Send message to MainController through Observer
+    submarine.setMessage(message);
 
-    txtMessage.setText("");
-}// TODO add your handling code here:
+    // Clear message field
+    txtMessage.setText("");// TODO add your handling code here:
     }//GEN-LAST:event_btnSendActionPerformed
 
     private void sldEnergyStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_sldEnergyStateChanged

@@ -4,18 +4,131 @@
  */
 package defense.system;
 
+    import javax.swing.*;
+
+
 /**
  *
  * @author HP
  */
-public class MainControllerGUI extends javax.swing.JFrame {
+public class MainControllerGUI extends javax.swing.JFrame implements Observer {
+    
+    private MainController mainController;
+
+    private Helicopter helicopter;
+    private Tank tank;
+    private SubMarine submarine;
+
+    private HelicopterGUI helicopterGUI;
+    private TankGUI tankGUI;
+    private SubMarineGUI submarineGUI;
+
+    private String[] lastMessages = new String[3];
 
     /**
      * Creates new form MainControllerGUI
      */
-    public MainControllerGUI() {
-        initComponents();
+public MainControllerGUI() {
+
+    initComponents();
+
+    setLocationRelativeTo(null);
+
+    // Create defence units
+    helicopter = new Helicopter();
+    Tank tankUnit = new Tank();
+    submarine = new SubMarine();
+
+    tank = tankUnit;
+
+    // Create MainController
+    mainController = new MainController();
+
+    // Register all defence units
+    mainController.registerDefence(helicopter);
+    mainController.registerDefence(tank);
+    mainController.registerDefence(submarine);
+
+    // Register this GUI as an observer
+    helicopter.addObserver(this);
+    tank.addObserver(this);
+    submarine.addObserver(this);
+
+    // Create unit GUIs using the same unit objects
+    helicopterGUI = new HelicopterGUI(helicopter);
+    tankGUI = new TankGUI(tank);
+    submarineGUI = new SubMarineGUI(submarine);
+
+    // Show unit GUIs
+    helicopterGUI.setVisible(true);
+    tankGUI.setVisible(true);
+    submarineGUI.setVisible(true);
+
+    // Initialize message tracking
+    lastMessages[0] = helicopter.getMessage();
+    lastMessages[1] = tank.getMessage();
+    lastMessages[2] = submarine.getMessage();
+}
+
+@Override
+public void update(SuperDefence defence) {
+
+    String message = defence.getMessage();
+
+    if (defence == helicopter) {
+
+        if (!message.equals(lastMessages[0])) {
+
+            txtMessages.append(
+                "Helicopter: " + message + "\n"
+            );
+
+            lastMessages[0] = message;
+        }
+
+    } else if (defence == tank) {
+
+        if (!message.equals(lastMessages[1])) {
+
+            txtMessages.append(
+                "Tank: " + message + "\n"
+            );
+
+            lastMessages[1] = message;
+        }
+
+    } else if (defence == submarine) {
+
+        if (!message.equals(lastMessages[2])) {
+
+            txtMessages.append(
+                "SubMarine: " + message + "\n"
+            );
+
+            lastMessages[2] = message;
+        }
     }
+}
+
+private void sendToUnit(SuperDefence defence, String message) {
+
+    // Store the message in the defence unit
+    defence.receiveMessage(message);
+
+    // Display the message in the correct unit GUI
+    if (defence == helicopter) {
+
+        helicopterGUI.receiveMessage(message);
+
+    } else if (defence == tank) {
+
+        tankGUI.receiveMessage(message);
+
+    } else if (defence == submarine) {
+
+        submarineGUI.receiveMessage(message);
+    }
+}
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -86,6 +199,11 @@ public class MainControllerGUI extends javax.swing.JFrame {
 
         btnSend.setFont(new java.awt.Font("Segoe UI Semibold", 1, 12)); // NOI18N
         btnSend.setText("Send");
+        btnSend.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSendActionPerformed(evt);
+            }
+        });
 
         txtMessages.setEditable(false);
         txtMessages.setColumns(20);
@@ -164,6 +282,75 @@ public class MainControllerGUI extends javax.swing.JFrame {
     private void chkAreaClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkAreaClearActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_chkAreaClearActionPerformed
+
+    private void btnSendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSendActionPerformed
+        String message = txtMessage.getText().trim();
+
+if (message.equals("")) {
+
+    JOptionPane.showMessageDialog(
+        this,
+        "Please enter a message!"
+    );
+
+    return;
+}
+
+// Private message
+if (chkPrivate.isSelected()) {
+
+    String selectedUnit =
+            cmbDefence.getSelectedItem().toString();
+
+    if (selectedUnit.equals("Select Defence")) {
+
+        JOptionPane.showMessageDialog(
+            this,
+            "Please select a defence unit!"
+        );
+
+        return;
+    }
+
+    if (selectedUnit.equals("Helicopter")) {
+
+        sendToUnit(helicopter, message);
+
+    } else if (selectedUnit.equals("Tank")) {
+
+        sendToUnit(tank, message);
+
+    } else if (selectedUnit.equals("SubMarine")) {
+
+        sendToUnit(submarine, message);
+    }
+
+    txtMessages.append(
+        "MainController (Private to " +
+        selectedUnit + "): " + message + "\n"
+    );
+
+} else {
+
+    // Broadcast to all units
+    for (int i = 0;
+         i < mainController.getDefenceCount();
+         i++) {
+
+        sendToUnit(
+            mainController.getDefence(i),
+            message
+        );
+    }
+
+    txtMessages.append(
+        "MainController (Broadcast): " +
+        message + "\n"
+    );
+}
+
+txtMessage.setText("");        // TODO add your handling code here:
+    }//GEN-LAST:event_btnSendActionPerformed
 
     /**
      * @param args the command line arguments
