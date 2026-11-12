@@ -168,6 +168,7 @@ public void updateOperationButtons(int position) {
             }
         });
 
+        sldOxygen.setFont(new java.awt.Font("Segoe UI Semibold", 0, 12)); // NOI18N
         sldOxygen.setMajorTickSpacing(20);
         sldOxygen.setMinorTickSpacing(10);
         sldOxygen.setOrientation(javax.swing.JSlider.VERTICAL);
@@ -181,6 +182,7 @@ public void updateOperationButtons(int position) {
             }
         });
 
+        txtMessages.setEditable(false);
         txtMessages.setColumns(20);
         txtMessages.setRows(5);
         jScrollPane1.setViewportView(txtMessages);
@@ -193,6 +195,7 @@ public void updateOperationButtons(int position) {
             }
         });
 
+        sldEnergy.setFont(new java.awt.Font("Segoe UI Semibold", 1, 12)); // NOI18N
         sldEnergy.setMajorTickSpacing(20);
         sldEnergy.setMinorTickSpacing(10);
         sldEnergy.setOrientation(javax.swing.JSlider.VERTICAL);

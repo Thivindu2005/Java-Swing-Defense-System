@@ -130,6 +130,7 @@ public void updateOperationButtons(int position) {
             }
         });
 
+        txtMessages.setEditable(false);
         txtMessages.setColumns(20);
         txtMessages.setRows(5);
         jScrollPane1.setViewportView(txtMessages);
@@ -167,6 +168,7 @@ public void updateOperationButtons(int position) {
             }
         });
 
+        sldPosition.setFont(new java.awt.Font("Segoe UI Semibold", 1, 12)); // NOI18N
         sldPosition.setMajorTickSpacing(20);
         sldPosition.setMinorTickSpacing(10);
         sldPosition.setOrientation(javax.swing.JSlider.VERTICAL);
