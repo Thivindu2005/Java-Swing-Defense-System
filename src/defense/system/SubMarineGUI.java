@@ -24,8 +24,12 @@ public SubMarineGUI() {
 public SubMarineGUI(SubMarine submarine) {
 
     initComponents();
-
+    
     this.submarine = submarine;
+    
+    spnAmmoCount.setValue(submarine.getAmmoCount());
+
+    updateResources();
 
     setTitle("SubMarine");
     setLocationRelativeTo(null);
@@ -41,11 +45,21 @@ public SubMarineGUI(SubMarine submarine) {
     sldOxygen.setValue(submarine.getOxygen());
 
     // Sliders are display indicators
-    sldEnergy.setEnabled(false);
-    sldOxygen.setEnabled(false);
+    sldEnergy.setEnabled(true);
+    sldOxygen.setEnabled(true);
 
     // Message area cannot be edited
     txtMessages.setEditable(false);
+    
+}
+
+public void updateAreaStatus(boolean cleared) {
+
+    if (cleared) {
+        lblAreaStatus.setText("Area Cleared");
+    } else {
+        lblAreaStatus.setText("Area Not Cleared");
+    }
 }
 
 private void updateResources() {
@@ -327,11 +341,16 @@ public void receiveMessage(String message) {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnShootActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnShootActionPerformed
-           if (submarine.shoot()) {
+            if (submarine.shoot()) {
 
-            txtMessages.append("SubMarine: Shoot operation completed.\n");
+                updateResources();
 
-           updateResources();
+             // Notify MainController
+                submarine.setMessage("Shoot operation completed.");
+
+                txtMessages.append(
+                "SubMarine: Shoot operation completed.\n"
+                );
 
             } else {
 

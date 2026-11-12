@@ -31,6 +31,10 @@ public class MainControllerGUI extends javax.swing.JFrame implements Observer {
 public MainControllerGUI() {
 
     initComponents();
+    
+    sldPosition.setMinimum(0);
+    sldPosition.setMaximum(100);
+    sldPosition.setValue(0);
 
     setLocationRelativeTo(null);
 
@@ -130,6 +134,75 @@ private void sendToUnit(SuperDefence defence, String message) {
     }
 }
 
+private void collectInformation() {
+
+    String selectedUnit =
+            cmbDefence.getSelectedItem().toString();
+
+    SuperDefence defence = null;
+
+    if (selectedUnit.equals("Helicopter")) {
+
+        defence = helicopter;
+
+    } else if (selectedUnit.equals("Tank")) {
+
+        defence = tank;
+
+    } else if (selectedUnit.equals("SubMarine")) {
+
+        defence = submarine;
+    }
+
+    if (defence == null) {
+
+        JOptionPane.showMessageDialog(
+            this,
+            "Please select a defence unit!"
+        );
+
+        return;
+    }
+
+    // Display unit information
+    lblSoldierCount.setText(
+        "Soldiers: " + defence.getSoldierCount()
+    );
+
+    lblAmmoAmount.setText(
+        "Ammo: " + defence.getAmmoCount()
+    );
+
+    lblPosition.setText(
+        "Position: " + defence.getPosition()
+    );
+
+    // Display area status
+    chkAreaClear.setSelected(defence.isAreaCleared());
+
+    // Display position
+    sldPosition.setValue(defence.getPosition());
+}
+
+private SuperDefence getSelectedDefence() {
+
+    String selectedUnit =
+            cmbDefence.getSelectedItem().toString();
+
+    if (selectedUnit.equals("Helicopter")) {
+        return helicopter;
+    }
+
+    if (selectedUnit.equals("Tank")) {
+        return tank;
+    }
+
+    if (selectedUnit.equals("SubMarine")) {
+        return submarine;
+    }
+
+    return null;
+}
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -167,6 +240,11 @@ private void sendToUnit(SuperDefence defence, String message) {
 
         btnCollect.setFont(new java.awt.Font("Segoe UI Semibold", 1, 12)); // NOI18N
         btnCollect.setText("Collect Informations");
+        btnCollect.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCollectActionPerformed(evt);
+            }
+        });
 
         chkAreaClear.setFont(new java.awt.Font("Segoe UI Semibold", 1, 12)); // NOI18N
         chkAreaClear.setText("Area clear");
@@ -193,6 +271,11 @@ private void sendToUnit(SuperDefence defence, String message) {
         sldPosition.setPaintLabels(true);
         sldPosition.setPaintTicks(true);
         sldPosition.setCursor(new java.awt.Cursor(java.awt.Cursor.MOVE_CURSOR));
+        sldPosition.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                sldPositionStateChanged(evt);
+            }
+        });
 
         chkPrivate.setFont(new java.awt.Font("Segoe UI Semibold", 1, 12)); // NOI18N
         chkPrivate.setText("Send Private");
@@ -280,7 +363,58 @@ private void sendToUnit(SuperDefence defence, String message) {
     }//GEN-LAST:event_cmbDefenceActionPerformed
 
     private void chkAreaClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkAreaClearActionPerformed
-        // TODO add your handling code here:
+            SuperDefence defence = getSelectedDefence();
+
+    if (defence == null) {
+
+        JOptionPane.showMessageDialog(
+            this,
+            "Please select a defence unit first!"
+        );
+
+        chkAreaClear.setSelected(false);
+        return;
+    }
+
+    // Update area status
+    defence.setAreaCleared(
+        chkAreaClear.isSelected()
+            
+    );
+    
+boolean cleared = chkAreaClear.isSelected();
+
+// Update Helicopter
+if (defence == helicopter) {
+    helicopterGUI.updateAreaStatus(cleared);
+}
+
+// Update Tank
+else if (defence == tank) {
+    tankGUI.updateAreaStatus(cleared);
+}
+
+// Update SubMarine
+else if (defence == submarine) {
+    submarineGUI.updateAreaStatus(cleared);
+}
+
+    if (chkAreaClear.isSelected()) {
+
+        txtMessages.append(
+            "MainController: " +
+            defence.getUnitName() +
+            " area cleared.\n"
+        );
+
+    } else {
+
+        txtMessages.append(
+            "MainController: " +
+            defence.getUnitName() +
+            " area not cleared.\n"
+        );
+    }        // TODO add your handling code here:
     }//GEN-LAST:event_chkAreaClearActionPerformed
 
     private void btnSendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSendActionPerformed
@@ -351,6 +485,38 @@ if (chkPrivate.isSelected()) {
 
 txtMessage.setText("");        // TODO add your handling code here:
     }//GEN-LAST:event_btnSendActionPerformed
+
+    private void btnCollectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCollectActionPerformed
+        collectInformation();        // TODO add your handling code here:
+    }//GEN-LAST:event_btnCollectActionPerformed
+
+    private void sldPositionStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_sldPositionStateChanged
+            
+        SuperDefence defence = getSelectedDefence();
+
+            if (defence == null) {
+                return;
+            }
+
+            int position = sldPosition.getValue();
+
+            // Update selected defence position
+            defence.setPosition(position);
+
+            // Update operation permissions
+            if (defence == helicopter) {
+
+                helicopterGUI.updateOperationButtons(position);
+
+            } else if (defence == tank) {
+
+                tankGUI.updateOperationButtons(position);
+
+            } else if (defence == submarine) {
+        
+                submarineGUI.updateOperationButtons(position);
+            }        // TODO add your handling code here:
+    }//GEN-LAST:event_sldPositionStateChanged
 
     /**
      * @param args the command line arguments

@@ -72,6 +72,14 @@ public void receiveMessage(String message) {
     );
 }
 
+public void updateAreaStatus(boolean cleared) {
+
+    if (cleared) {
+        lblAreaStatus.setText("Area Cleared");
+    } else {
+        lblAreaStatus.setText("Area Not Cleared");
+    }
+}
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always

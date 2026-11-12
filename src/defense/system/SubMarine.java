@@ -13,12 +13,12 @@ public class SubMarine extends SuperDefence {
     private int energy;
     private int oxygen;
 
-    public SubMarine() {
-        super("SubMarine", 0, 0);
+public SubMarine() {
+    super("SubMarine", 0, 100);
 
-        energy = 100;
-        oxygen = 100;
-    }
+    energy = 100;
+    oxygen = 100;
+}
 
     // Get Energy
     public int getEnergy() {
