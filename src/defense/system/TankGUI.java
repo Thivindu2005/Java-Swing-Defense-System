@@ -379,12 +379,19 @@ public void updateAreaStatus(boolean cleared) {
     }//GEN-LAST:event_sldPositionStateChanged
 
     private void btnRotateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRotateActionPerformed
-            if (tank.rotateShooting()) {
+        if (tank.rotateShooting()) {
 
-        txtMessages.append(
-            "Tank: Rotate shooting operation completed.\n"
-        );
-    }        // TODO add your handling code here:
+            spnAmmoCount.setValue(tank.getAmmoCount());
+
+            txtMessages.append("Tank: Rotate shooting operation completed.\n");
+
+        } else {
+
+            JOptionPane.showMessageDialog(
+                this,
+                "Not enough ammunition! Rotate Shooting requires 2 ammunition."
+            );
+        }        // TODO add your handling code here:
     }//GEN-LAST:event_btnRotateActionPerformed
 
     private void btnRadarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRadarActionPerformed

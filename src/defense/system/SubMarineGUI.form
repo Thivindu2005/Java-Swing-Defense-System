@@ -44,15 +44,18 @@
                                   <EmptySpace min="10" pref="10" max="-2" attributes="0"/>
                                   <Component id="lblAreaStatus" min="-2" pref="108" max="-2" attributes="0"/>
                                   <EmptySpace max="32767" attributes="0"/>
-                                  <Component id="spnSoldierCount" min="-2" pref="47" max="-2" attributes="0"/>
+                                  <Component id="spnSoldierCount" min="-2" pref="55" max="-2" attributes="0"/>
                               </Group>
                               <Group type="102" alignment="0" attributes="0">
                                   <Group type="103" groupAlignment="1" max="-2" attributes="0">
                                       <Component id="btnShoot" max="32767" attributes="0"/>
                                       <Component id="btnTomahawk" max="32767" attributes="0"/>
                                   </Group>
-                                  <EmptySpace max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="0" attributes="0">
+                                      <Group type="102" alignment="0" attributes="0">
+                                          <EmptySpace min="-2" pref="147" max="-2" attributes="0"/>
+                                          <Component id="lblSoldierCount" min="-2" pref="102" max="-2" attributes="0"/>
+                                      </Group>
                                       <Group type="102" alignment="0" attributes="0">
                                           <Group type="103" groupAlignment="1" attributes="0">
                                               <Group type="102" attributes="0">
@@ -66,12 +69,8 @@
                                                   <Component id="lblAmmoCount" min="-2" pref="77" max="-2" attributes="0"/>
                                               </Group>
                                           </Group>
-                                          <EmptySpace min="-2" pref="26" max="-2" attributes="0"/>
-                                          <Component id="spnAmmoCount" min="-2" pref="47" max="-2" attributes="0"/>
-                                      </Group>
-                                      <Group type="102" alignment="0" attributes="0">
-                                          <EmptySpace min="-2" pref="147" max="-2" attributes="0"/>
-                                          <Component id="lblSoldierCount" min="-2" pref="102" max="-2" attributes="0"/>
+                                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                                          <Component id="spnAmmoCount" min="-2" pref="55" max="-2" attributes="0"/>
                                       </Group>
                                   </Group>
                               </Group>

@@ -22,8 +22,8 @@ public class MainControllerGUI extends javax.swing.JFrame implements Observer {
     private HelicopterGUI helicopterGUI;
     private TankGUI tankGUI;
     private SubMarineGUI submarineGUI;
-
-    private String[] lastMessages = new String[3];
+    
+    private long[] lastMessageVersions = new long[3];
 
     /**
      * Creates new form MainControllerGUI
@@ -67,51 +67,38 @@ public MainControllerGUI() {
     helicopterGUI.setVisible(true);
     tankGUI.setVisible(true);
     submarineGUI.setVisible(true);
-
-    // Initialize message tracking
-    lastMessages[0] = helicopter.getMessage();
-    lastMessages[1] = tank.getMessage();
-    lastMessages[2] = submarine.getMessage();
+    
 }
+
 
 @Override
 public void update(SuperDefence defence) {
 
-    String message = defence.getMessage();
+    // Synchronize Area Clear checkbox
+    if (defence == getSelectedDefence()) {
+        chkAreaClear.setSelected(defence.isAreaCleared());
+    }
+
+    // Only display actual new messages
+    if (!defence.hasNewMessage()) {
+        return;
+    }
 
     if (defence == helicopter) {
-
-        if (!message.equals(lastMessages[0])) {
-
-            txtMessages.append(
-                "Helicopter: " + message + "\n"
-            );
-
-            lastMessages[0] = message;
-        }
-
-    } else if (defence == tank) {
-
-        if (!message.equals(lastMessages[1])) {
-
-            txtMessages.append(
-                "Tank: " + message + "\n"
-            );
-
-            lastMessages[1] = message;
-        }
-
-    } else if (defence == submarine) {
-
-        if (!message.equals(lastMessages[2])) {
-
-            txtMessages.append(
-                "SubMarine: " + message + "\n"
-            );
-
-            lastMessages[2] = message;
-        }
+        txtMessages.append("Helicopter: "
+                + defence.getMessage() + "\n");
     }
+    else if (defence == tank) {
+        txtMessages.append("Tank: "
+                + defence.getMessage() + "\n");
+    }
+    else if (defence == submarine) {
+        txtMessages.append("SubMarine: "
+                + defence.getMessage() + "\n");
+    }
+
+    // Mark message as displayed
+    defence.clearNewMessage();
 }
 
 private void sendToUnit(SuperDefence defence, String message) {
@@ -494,28 +481,25 @@ txtMessage.setText("");        // TODO add your handling code here:
             
         SuperDefence defence = getSelectedDefence();
 
-            if (defence == null) {
-                return;
-            }
+        if (defence == null) {
+            return;
+        }
 
-            int position = sldPosition.getValue();
+        int position = sldPosition.getValue();
 
-            // Update selected defence position
-            defence.setPosition(position);
+        // Update position only
+        defence.setPosition(position);
 
-            // Update operation permissions
-            if (defence == helicopter) {
-
-                helicopterGUI.updateOperationButtons(position);
-
-            } else if (defence == tank) {
-
-                tankGUI.updateOperationButtons(position);
-
-            } else if (defence == submarine) {
-        
-                submarineGUI.updateOperationButtons(position);
-            }        // TODO add your handling code here:
+        // Update operation buttons only
+        if (defence == helicopter) {
+            helicopterGUI.updateOperationButtons(position);
+        }
+        else if (defence == tank) {
+            tankGUI.updateOperationButtons(position);
+        }
+        else if (defence == submarine) {
+            submarineGUI.updateOperationButtons(position);
+        }       // TODO add your handling code here:
     }//GEN-LAST:event_sldPositionStateChanged
 
     /**

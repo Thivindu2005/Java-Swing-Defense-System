@@ -18,6 +18,7 @@ public abstract class SuperDefence implements Observable {
     private boolean areaCleared;
     private Strength strength;
     private String message;
+    private boolean newMessage;
 
     // Observer array
     private Observer[] observers;
@@ -34,9 +35,11 @@ public abstract class SuperDefence implements Observable {
         areaCleared = false;
         strength = Strength.MEDIUM;
         message = "Area Not Cleared";
+        newMessage = false;
 
         observers = new Observer[10];
         observerCount = 0;
+        
     }
 
     // Get unit name
@@ -99,15 +102,6 @@ public abstract class SuperDefence implements Observable {
 
         this.areaCleared = areaCleared;
 
-        if (areaCleared == true) {
-
-            message = "Area Cleared";
-
-        } else {
-
-            message = "Area Not Cleared";
-        }
-
         notifyObservers();
     }
 
@@ -130,16 +124,24 @@ public abstract class SuperDefence implements Observable {
 
     // Set message
     public void setMessage(String message) {
-
         this.message = message;
+        newMessage = true;
         notifyObservers();
+    }
+    
+    public boolean hasNewMessage() {
+        return newMessage;
+    }
+
+    public void clearNewMessage() {
+        newMessage = false;
     }
     
     // Receive message from MainController
     public void receiveMessage(String message) {
 
-    this.message = message;
-}
+        this.message = message;
+    }
 
     // Add observer
     @Override

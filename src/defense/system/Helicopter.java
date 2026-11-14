@@ -51,17 +51,10 @@ public class Helicopter extends SuperDefence {
     // Laser operation
     public boolean laserOperation() {
 
-        if (getAmmoCount() >= 1) {
+        setMessage("Helicopter laser operation completed.");
 
-            setAmmoCount(getAmmoCount() - 1);
+        return true;
 
-            setMessage("Helicopter laser operation completed.");
-
-            return true;
-
-        }
-
-        return false;
     }
 
     // Update soldier count

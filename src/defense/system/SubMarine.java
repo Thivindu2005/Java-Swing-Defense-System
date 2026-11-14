@@ -34,6 +34,7 @@ public SubMarine() {
     public void updateEnergy(int energy) {
         if (energy >= 0 && energy <= 100) {
             this.energy = energy;
+            notifyObservers();
         }
     }
 
@@ -41,6 +42,7 @@ public SubMarine() {
     public void updateOxygen(int oxygen) {
         if (oxygen >= 0 && oxygen <= 100) {
             this.oxygen = oxygen;
+            notifyObservers();
         }
     }
 

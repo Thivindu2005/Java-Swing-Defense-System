@@ -54,9 +54,16 @@ public class Tank extends SuperDefence {
     // Rotate shooting operation
     public boolean rotateShooting() {
 
-        setMessage("Tank rotate shooting operation completed.");
+        if (getAmmoCount() >= 2) {
+
+            setAmmoCount(getAmmoCount() - 2);
+
+            setMessage("Tank rotate shooting operation completed.");
 
         return true;
+    }
+
+        return false;
     }
 
     // Update soldier count

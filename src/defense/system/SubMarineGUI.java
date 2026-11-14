@@ -41,8 +41,15 @@ public SubMarineGUI(SubMarine submarine) {
     btnTrident.setEnabled(false);
 
     // Display initial Energy and Oxygen
+    sldEnergy.setMinimum(0);
+    sldEnergy.setMaximum(100);
     sldEnergy.setValue(submarine.getEnergy());
+    sldEnergy.setEnabled(true);
+
+    sldOxygen.setMinimum(0);
+    sldOxygen.setMaximum(100);
     sldOxygen.setValue(submarine.getOxygen());
+    sldOxygen.setEnabled(true);
 
     // Sliders are display indicators
     sldEnergy.setEnabled(true);
@@ -85,11 +92,6 @@ public void updateOperationButtons(int position) {
 
     btnTrident.setEnabled(positionSelected && position >= 80);
 
-    if (position >= 20) {
-        lblAreaStatus.setText("Area Cleared");
-    } else {
-        lblAreaStatus.setText("Area Not Cleared");
-    }
 }
 
 public void receiveMessage(String message) {
@@ -258,13 +260,15 @@ public void receiveMessage(String message) {
                                     .addGap(10, 10, 10)
                                     .addComponent(lblAreaStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(spnSoldierCount, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(spnSoldierCount, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                         .addComponent(btnShoot, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                         .addComponent(btnTomahawk, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(layout.createSequentialGroup()
+                                            .addGap(147, 147, 147)
+                                            .addComponent(lblSoldierCount, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE))
                                         .addGroup(layout.createSequentialGroup()
                                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                                 .addGroup(layout.createSequentialGroup()
@@ -275,11 +279,8 @@ public void receiveMessage(String message) {
                                                     .addComponent(btnSonar)
                                                     .addGap(26, 26, 26)
                                                     .addComponent(lblAmmoCount, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                            .addGap(26, 26, 26)
-                                            .addComponent(spnAmmoCount, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addGroup(layout.createSequentialGroup()
-                                            .addGap(147, 147, 147)
-                                            .addComponent(lblSoldierCount, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE))))))
+                                            .addGap(18, 18, 18)
+                                            .addComponent(spnAmmoCount, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE))))))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
                         .addComponent(sldEnergy, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -374,14 +375,19 @@ public void receiveMessage(String message) {
              this,
                   "Not enough ammunition, energy or oxygen!"
             );
-        } // TODO add your handling code here:
+        }
+        
+        updateResources();
+        
+        submarine.setMessage("Tomahawk missile launched.");// TODO add your handling code here:
+        
     }//GEN-LAST:event_btnTomahawkActionPerformed
 
     private void btnTridentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTridentActionPerformed
             if (submarine.tridentMissile()) {
 
                 txtMessages.append("SubMarine: Trident-2 missile launched.\n");
-
+                
                 updateResources();
 
             } else {
@@ -390,7 +396,12 @@ public void receiveMessage(String message) {
                   this,
                         "Not enough ammunition, energy or oxygen!"
                 );
-            }   // TODO add your handling code here:
+            } 
+            
+            updateResources();
+            
+            submarine.setMessage("Trident-2 missile launched.");// TODO add your handling code here:
+
     }//GEN-LAST:event_btnTridentActionPerformed
 
     private void btnSonarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSonarActionPerformed
@@ -406,7 +417,12 @@ public void receiveMessage(String message) {
             this,
                   "Not enough energy or oxygen!"
             );
-        }       // TODO add your handling code here:
+        }  
+        
+        updateResources();
+        
+        submarine.setMessage("Sonar operation completed.");// TODO add your handling code here:
+        
     }//GEN-LAST:event_btnSonarActionPerformed
 
     private void chkPositionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chkPositionActionPerformed
@@ -422,7 +438,9 @@ public void receiveMessage(String message) {
     }//GEN-LAST:event_spnSoldierCountStateChanged
 
     private void sldOxygenStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_sldOxygenStateChanged
-     // TODO add your handling code here:
+        int oxygen = sldOxygen.getValue();
+
+        submarine.updateOxygen(oxygen); // TODO add your handling code here:
     }//GEN-LAST:event_sldOxygenStateChanged
 
     private void btnSendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSendActionPerformed
@@ -446,7 +464,9 @@ public void receiveMessage(String message) {
     }//GEN-LAST:event_btnSendActionPerformed
 
     private void sldEnergyStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_sldEnergyStateChanged
-        // TODO add your handling code here:
+        int energy = sldEnergy.getValue();
+
+        submarine.updateEnergy(energy);        // TODO add your handling code here:
     }//GEN-LAST:event_sldEnergyStateChanged
 
     /**

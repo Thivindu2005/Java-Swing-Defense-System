@@ -310,18 +310,7 @@ public void updateAreaStatus(boolean cleared) {
             txtMessages.append(
             "Helicopter: Laser operation completed.\n"
              );
-
-            spnAmmoCount.setValue(
-            helicopter.getAmmoCount()
-        );
-
-        } else {
-
-            JOptionPane.showMessageDialog(
-                 this,
-                "Not enough ammunition!"
-            );
-        }        // TODO add your handling code here:
+        }// TODO add your handling code here:
     }//GEN-LAST:event_btnLaserActionPerformed
 
     private void spnSoldierCountStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_spnSoldierCountStateChanged
